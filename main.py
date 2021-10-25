@@ -4,6 +4,13 @@ from dotenv import dotenv_values
 
 
 def make_request(snyk_token: str, url: str) -> str:
+    """
+    Function to make a request to one Snyk API URI.
+
+    snyk_token: string
+    url: string
+    return string
+    """
     header = {
         "Content-Type": "application/json; charset=utf-8",
         "Authorization": f"token {snyk_token}",
