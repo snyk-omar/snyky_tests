@@ -50,17 +50,34 @@ def convert_payload_to_json(payload: dict) -> str:
 
 
 def main() -> None:
-    CONFIG = dotenv_values()
-    SNYK_TOKEN = CONFIG["SNYK_TOKEN"]
-    ORG_ID = CONFIG["ORG_ID"]
-    USER_ID = CONFIG["USER_ID"]
+    config = dotenv_values()
+    snyk_token = config["SNYK_TOKEN"]
+    org_id = config["ORG_ID"]
+    user_id = config["USER_ID"]
+    project_id = config["PROJECT_ID"]
 
-    session = create_session(SNYK_TOKEN)
-    test_uri = f"orgs/{ORG_ID}/users/{USER_ID}"
+    session = create_session(snyk_token)
+    test_uri = f"orgs/{org_id}/users/{user_id}"
 
-    # Get user details
-    res = session.get(url=test_uri, params={"version": "2021-09-13~beta"})
-    print(res.json())
+    # # Get user details
+    # res = session.get(url=test_uri, params={"version": "2021-09-13~beta"})
+    # print(json.dumps(res.json(), indent=2))
+
+    # Get a list of all issues from a Snyk Code project
+    all_issues_url = f"orgs/{org_id}/issues"
+
+    params = {
+        "project_id": project_id,
+        "version": "2021-08-20~experimental",
+    }
+
+    res = session.get(url=all_issues_url, params=params)
+
+    # Iterate over the list of issue data and print the issue details
+    data = res.json()["data"]
+    for d in data:
+        if d["attributes"]["severity"] == "high":
+            print(d["attributes"]["title"])
 
 
 if __name__ == "__main__":

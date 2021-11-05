@@ -13,6 +13,8 @@ Inside of the `.env` file, you need two keys (and you can add more if you want t
 ```
 SNYK_TOKEN=""
 ORG_ID=""
+USER_ID=""
+PROJECT_ID=""
 ```
 
 Do NOT checkin the `.env` file to GitHub or any other SCM. This holds your secrets, and they're safer on your workstation rather than on the cloud.
